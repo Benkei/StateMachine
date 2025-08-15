@@ -48,7 +48,7 @@ void StateMachine::run(){
  * Adds a state to the machine
  * It adds the state in sequential order.
  */
-State* StateMachine::addState(void (*fp_loop)(), void (*fp_enter)() = NULL, void (*fp_exit)() = NULL){
+State* StateMachine::addState(void (*fp_loop)(), void (*fp_enter)(), void (*fp_exit)()){
   int idx = stateList->size();
   State* s = new State(idx, fp_loop, fp_enter, fp_exit);
   stateList->add(s);

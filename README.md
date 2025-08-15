@@ -81,6 +81,29 @@ void state0(){
 
 If you need to execute a portion of code within a state just once, you can use the machine attribute ```executeOnce```. This attribute is true the first time a state logic is evaluated and then becomes false until a transition to a new state occurs. In the example above, the LED is toggled once every time the machine enters state S0.  
 
+### State Transitions Events
+
+Alternatively to using 'State Execute Once', you can implement a function for entering and exiting states.
+This function will be executed once during a state transition.
+
+```c++
+State* S0 = machine.addState(&state0, &stateEnter0, $stateExit0);
+
+void state0(){
+  Serial.println("State 0 Loop");
+}
+
+void stateEnter0(){
+  Serial.println("State 0 Enter");
+  digitalWrite(LED, 1);
+}
+
+void stateExit0(){
+  Serial.println("State 0 Exit");
+  digitalWrite(LED, 0);
+}
+```
+
 ### Transitions
 
 Transitions are added to the states in the setup() function. When specifying a transition of a state you pass the name of the function that evaluates the transition and the state object you want the machine to transition to when it evaluates to true.

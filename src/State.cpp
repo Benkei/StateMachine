@@ -1,7 +1,9 @@
 #include "State.h"
 
-State::State(){
-  transitions = new LinkedList<struct Transition*>();
+State::State(int index, void (*fp_loop)(), void (*fp_enter)(), void (*fp_exit)())
+    : stateLogic(fp_loop), stateEnterLogic(fp_enter), stateExitLogic(fp_exit), transitions(NULL), index(index)
+{
+  transitions = new LinkedList<struct Transition *>();
 };
 
 State::~State(){};
@@ -57,15 +59,33 @@ int State::evalTransitions(){
  * returns true is returned.
  */
 int State::execute(){
-  stateLogic();
+  if (stateLogic != NULL){
+    stateLogic();
+  }
   return evalTransitions();
+}
+
+void State::executeEnter(){
+  if (stateEnterLogic != NULL){
+    stateEnterLogic();
+  }
+}
+
+void State::executeExit(){
+  if (stateExitLogic != NULL){
+    stateExitLogic();
+  }
 }
 
 /*
  * Method to dynamically set a transition
  */
 int State::setTransition(int index, int stateNo){
-	if(transitions->size() == 0) return -1;
-	transitions->get(index)->stateNumber = stateNo;
-	return stateNo;
+  if(transitions->size() == 0) return -1;
+  transitions->get(index)->stateNumber = stateNo;
+  return stateNo;
+}
+
+int State::getIndex(){
+  return index;
 }

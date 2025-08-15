@@ -21,23 +21,29 @@ struct Transition{
  */
 class State{
   public:
-    State();
+    State(int index, void (*fp_loop)(), void (*fp_enter)(), void (*fp_exit)());
     ~State();
 
-	void addTransition(bool (*c)(), State* s);
+    void addTransition(bool (*c)(), State* s);
     void addTransition(bool (*c)(), int stateNumber);
     int evalTransitions();
     int execute();
-    int setTransition(int index, int stateNumber);	//Can now dynamically set the transition
-	
+    void executeEnter();
+    void executeExit();
+    int setTransition(int index, int stateNumber); // Can now dynamically set the transition
+
+    int getIndex();
+
+  private:
     // stateLogic is the pointer to the function
     // that represents the state logic
     void (*stateLogic)();
-    LinkedList<struct Transition*> *transitions;
-	int index;
+    void (*stateEnterLogic)();
+    void (*stateExitLogic)();
+
+    LinkedList<struct Transition *> *transitions;
+
+    int index;
 };
-
-
-
 
 #endif
